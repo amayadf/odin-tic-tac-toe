@@ -40,3 +40,30 @@ const gameBoard = (function() {
 const game = (function() {
     
 });
+
+function createPlayer(name, mark) {
+    let points = 0;
+
+    function getName() {
+        return name;
+    }
+
+    function getMark() {
+        return mark;
+    }
+
+    function getPoints() {
+        return points;
+    }
+
+    function addPoint() {
+        points++;
+    }
+
+    return {
+        getName,
+        getMark,
+        getPoints,
+        addPoint,
+    }
+}
