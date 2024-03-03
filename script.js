@@ -30,6 +30,13 @@ const gameBoard = (function() {
     }
     
     return {
-
+        getGameBoard,
+        checkIfAvailable,
+        placeMark,
+        clearGameBoard,
     }
+});
+
+const game = (function() {
+    
 });
