@@ -75,11 +75,11 @@ const gameController = (function() {
 
     function checkForTie(array) {
         let tie = true;
-        array.forEach(row => {
-            if(row.includes('')){
-                tie = false;
+        for(let i = 0; i < array.lenght && tie; i++){
+            for(let j = 0; j < array[i].lenght && tie; j++) {
+                if(row.includes('')) tie = false;   
             }
-        });
+        }
         return tie;
     }
 
