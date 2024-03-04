@@ -37,10 +37,6 @@ const gameBoard = (function() {
     }
 });
 
-const game = (function() {
-    
-});
-
 function createPlayer(name, mark) {
     let points = 0;
 
@@ -67,3 +63,34 @@ function createPlayer(name, mark) {
         addPoint,
     }
 }
+
+const gameController = (function() {
+    let players = [];
+    const marks = ['O', 'X'];
+
+    function setPlayers(names, marks) {
+        players.push(createPlayer(names[0], marks[0]));
+        players.push(createPlayer(names[1], marks[1]));
+    }
+
+    function checkForTie(array) {
+        let tie = true;
+        array.forEach(row => {
+            if(row.includes('')){
+                tie = false;
+            }
+        });
+        return tie;
+    }
+
+    function checkForWinner() {
+
+    }
+
+    function playRound() {
+
+    }
+
+
+
+});
