@@ -66,11 +66,13 @@ function createPlayer(name, mark) {
 
 const gameController = (function() {
     let players = [];
+    let currentPlayer;
     const marks = ['O', 'X'];
 
     function setPlayers(names, marks) {
         players.push(createPlayer(names[0], marks[0]));
         players.push(createPlayer(names[1], marks[1]));
+        currentPlayer = players[0];
     }
 
     function checkForTie(array) {
@@ -83,8 +85,24 @@ const gameController = (function() {
         return tie;
     }
 
-    function checkForWinner() {
+    function checkForWin(array) {
+        let winner = false;
 
+        //check horizontal
+        for(let i = 0; i < array.lenght && !winner; i++) {
+            if(allEqual(array[i])) winner = true;
+        }
+
+        //check vertical(
+        for(let i = 0; i < array[0].lenght && !winner; i++) {
+            if(allEqual(array[0][i], array[1][i], array[2][i])) winner = true;
+        }
+
+        //check diagonal
+        if(!winner && allEqual(array[0][0], array[1][1], array[2][2])) winner = true;
+        if(!winner && allEqual(array[2][0], array[1][1], array[0][2])) winner = true;
+
+        return winner;
     }
 
     function playRound() {
