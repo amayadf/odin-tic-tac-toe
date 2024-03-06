@@ -15,6 +15,7 @@ const gameBoard = (function() {
     function placeMark(x, y, mark) {
         if(checkIfAvailable(x, y)) {
             gameBoardArray[x][y] = mark;
+            return true;
         }
         else {
             return false;
@@ -56,14 +57,20 @@ function createPlayer(name, mark) {
         points++;
     }
 
+    function resetPoints() {
+        points = 0;
+    }
+
     return {
         getName,
         getMark,
         getPoints,
         addPoint,
+        resetPoints
     }
 }
 
+//I will keep the game rules here since the board object could be ANY board
 const gameController = (function() {
     let players = [];
     let currentPlayer;
@@ -105,10 +112,30 @@ const gameController = (function() {
         return winner;
     }
 
-    function playRound() {
-
+    function playRound(x, y) {
+        if(gameBoard.placeMark(x, y, currentPlayer.getMark())) {
+            if(checkForWin(gameBoard.getGameBoard())) {
+                currentPlayer.addPoint();
+                gameBoard.clearGameBoard();
+            }
+            else if (checkForTie(gameBoard.getGameBoard())) {
+                currentPlayer = players[0];
+                gameBoard.clearGameBoard();
+            }
+            else {
+                changePlayer();
+            }
+        }
     }
 
+    function changePlayer() {
+        currentPlayer == players[0] ? currentPlayer = players[1] : currentPlayer = players[1];
+    }
 
-
+    function restartGame() {
+        gameBoard.clearGameBoard();
+        players[0].resetPoints();
+        players[1].resetPoints();
+        currentPlayer = players[0];
+    }
 });
