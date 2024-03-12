@@ -4,8 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe | The Odin Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <header>TIC TAC TOE</header>
+
+    <main>
+        <div id="game-screen" class="screen">
+            <div id = "game-board">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
     
+            <button id="btn-restart">Restart game</button>
+        </div>
+
+        <div id="pregame-screen" class="screen">
+            <div class="player-info-section">
+                <div class="player-info">
+                    <p>Player #1</p>
+                    <label for="player-1-name">Name: </label>
+                    <input type="text" name="player-1-name" id="player-1-name" required>
+                </div>
+                <div class="player-info">
+                    <p>Player #2</p>
+                    <label for="player-2-name">Name: </label>
+                    <input type="text" name="player-2-name" id="player-2-name" required>
+                </div>
+            </div>
+            <button id="btn-start">Start Game</button>
+        </div>
+    </main>
+
+    <footer>
+        Copyright ©
+        <script>
+            document.write(new Date().getFullYear())
+        </script>
+        amayadf | <a href="https://www.theodinproject.com/lessons/foundations-etch-a-sketch">The Odin Project</a>
+    </footer>
 </body>
 </html>

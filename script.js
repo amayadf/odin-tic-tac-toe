@@ -138,4 +138,34 @@ const gameController = (function() {
         players[1].resetPoints();
         currentPlayer = players[0];
     }
+
+    return {
+        setPlayers,
+        playRound,
+        restartGame,
+    }
+});
+
+const displayController = (function() {
+    let gameScreen = document.querySelector('#game-screen');
+    let gameBoard = document.querySelector('#game-board');
+    let gameBoardCells = document.querySelectorAll('.cell');
+    let btnRestart = document.querySelector('#btn-restart');
+    let pregameScreen = document.querySelector('#pregame-screen');
+    let btnStart = document.querySelector('#btn-start');
+
+    function handleRestartClick() {
+        gameController.restartGame();
+        //function to make screen look like at the beginning
+    }
+
+
+    function handleStartClick() {
+        switchScreens();
+    }
+
+    function switchScreens() {
+        gameScreen.classList.toggle('active');
+        pregameScreen.classList.toggle('active');
+    }
 });
