@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,36 +8,40 @@
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
+
 <body>
-    <header>TIC TAC TOE</header>
+    <header>
+        <h1>TIC TAC TOE</h1>
+    </header>
 
     <main>
-        <div id="game-screen" >
-            <div id = "game-board">
+        <div class="game-screen">
+            <p>It's Player <span id="current-player" class="O">O</span>'s turn!</p>
+            <div id="game-board">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div> 
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-
-            <div id= "points-board">
-                <div class="player-points-info">
-                    <p id="player-1-label"></p>
-                    <p id="player-1-points"></p>
-                </div>
-                <div class="player-points-info">
-                    <p id="player-2-label"></p>
-                    <p id="player-2-points"></p>
-                </div>
             </div>
     
-            <button id="btn-restart">Restart game</button>
+            <div class="points-board">
+                <div>
+                    <p class="O">Player 'O':</p>
+                    <p id="player-1-points">0</p>
+                </div>
+                <div>
+                    <p class="X">Player 'X':</p>
+                    <p id="player-2-points">0</p>
+                </div>
+            </div>
         </div>
+
+        <button id="btn-restart">RESTART GAME</button>
     </main>
 
     <footer>
@@ -44,9 +49,10 @@
         <script>
             document.write(new Date().getFullYear())
         </script>
-        <a href="https://github.com/amayadf/odin-tic-tac-toe">amayadf</a> 
-        | 
+        <a href="https://github.com/amayadf/odin-tic-tac-toe">amayadf</a>
+        |
         <a href="https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe">The Odin Project</a>
     </footer>
 </body>
+
 </html>

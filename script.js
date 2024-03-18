@@ -1,31 +1,38 @@
 const gameBoard = (function() {
-    let gameBoardArray = ['','','','','','','','',''];
+    let boardArray = ['','','','','','','','',''];
 
     function getGameBoard() {
-        return gameBoardArray;
+        return boardArray;
+    }
+
+    function getMarkAtIndex(index) {
+        if(index < boardArray.length && index >= 0) {
+            return boardArray[index];
+        }
+        return;
     }
 
     function checkIfAvailable(index) {
-        return gameBoardArray[index] === '';
+        return boardArray[index] === '';
     }
 
     function placeMark(index, mark) {
         if(checkIfAvailable(index)) {
-            gameBoardArray[index] = mark;
+            boardArray[index] = mark;
             return true;
         }
         return false;
     }
 
     function clearGameBoard() {
-        gameBoardArray.forEach((element,elementIndex) => {
-            gameBoardArray[elementIndex] = '';
+        boardArray.forEach((element,index) => {
+            boardArray[index] = '';
         })
     }
 
     return {
         getGameBoard,
-        checkIfAvailable,
+        getMarkAtIndex,
         placeMark,
         clearGameBoard
     }
@@ -59,14 +66,15 @@ function createPlayer(mark) {
 }
 
 const gameController = (function() {
-    let players = [createPlayer('O'), createPlayer('X')];
-    let currentPlayerIndex = 0;
+    let playerO = createPlayer('O');
+    let playerX = createPlayer('X');
+    let currentPlayer = playerO;
 
     function checkForTie() {
-        return !gameBoard.getGameBoard().includes('');
+        return !(gameBoard.getGameBoard().includes(''));
     }
 
-    function checkWinner(newMarkIndex) {
+    function checkForWin(newMarkIndex) {
         const winConditions = [
           [0, 1, 2],
           [3, 4, 5],
@@ -79,41 +87,39 @@ const gameController = (function() {
         ];
 
         return winConditions
-                .filter((condition) => condition
-                .includes(newMarkIndex)).some((possibleCondition) => possibleCondition
-                .every((index) => gameBoard.getGameBoard()[index] === players[currentPlayerIndex].getMark()));
+            .filter((condition) => condition
+            .includes(newMarkIndex)).some((possibleCondition) => possibleCondition
+            .every((index) => gameBoard.getMarkAtIndex(index) === currentPlayer.getMark()));
+    }
+
+    function changePlayer() {
+        currentPlayer === playerO ? currentPlayer = playerX : currentPlayer = playerO;
     }
 
     function playRound(index) {
-        if(gameBoard.placeMark(index, players[currentPlayerIndex].getMark())) {
+        if(gameBoard.placeMark(index, currentPlayer.getMark())) {
             if(checkForTie()) {
-                currentPlayerIndex = 0;
+                currentPlayer = playerO;
                 gameBoard.clearGameBoard();
-            }
-            else if(checkWinner(index).lenght > 0) {
-                players[currentPlayerIndex].addPoint();
-                gameBoard,clearGameBoard();
+            } 
+            else if(checkForWin(index)) {
+                currentPlayer.addPoint();
+                gameBoard.clearGameBoard();
             }
             else {
                 changePlayer();
             }
         }
     }
-    
-    function changePlayer() {
-        currentPlayerIndex === 0 ? currentPlayerIndex = 1 : currentPlayerIndex = 0;
-    }
 
     function restartGame() {
         gameBoard.clearGameBoard();
-        players[0].resetPoints();
-        players[1].resetPoints();
-        currentPlayerIndex = 0;
+        playerO.resetPoints();
+        playerX.resetPoints();
+        currentPlayer = playerO;
     }
 
     return {
-        players,
-        currentPlayerIndex,
         playRound,
         restartGame
     }

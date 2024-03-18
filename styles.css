@@ -4,12 +4,12 @@
 }
 
 :root{
-    --main-dark: #213555;
-    --secondary-dark:#497174;
-    --terciary-dark:#EB6440;
-    --main-light:#EFF5F5;
-    --secondary-light: #D6E4E5;
-    --terciary-light: #fffffff7;
+    --main-dark: #2D3250;
+    --secondary-dark:#424769;
+    --terciary-dark:#7077A1;
+    --main-light:#f7f7f7;
+    --player-one: #F6B17A;
+    --player-two: #f58fadf7;
 }
 
 *,
@@ -28,8 +28,8 @@ html {
 }
 
 body {
-    background-color: var(--main-light);
-    color: var(--main-dark);
+    background-color: var(--main-dark);
+    color: var(--main-light);
     font-family: 'Lexend';
     margin: 0;
     height: 100vh;
@@ -40,25 +40,80 @@ body {
     align-items: center;
 }
 
+/*header*/
+
 h1 {
     padding-top: 16px;
+}
+
+/*main*/
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 16px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.game-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
 }
 
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    height: 350px;
+    background-color: var(--secondary-dark);
     width: 350px;
-    border-radius: 10%;
-
+    height: 350px;
 }
 
 .cell {
-    background-color: var(--terciary-light);
-
+    border: 1px solid var(--main-dark);
+    text-align: center;
 }
 
+.cell:hover {
+    cursor: pointer;
+    color: var(--main-light);
+}
 
+.points-board {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+p {
+    display: inline;
+}
+
+button {
+    background-color: var(--terciary-dark);
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid var(--secondary-dark);
+    padding: 8px 32px;
+}
+
+button:hover {
+    background-color: var(--main-light);
+    color: var(--main-dark);
+}
+
+.O {
+    color: var(--player-one);
+}
+
+.X {
+    color: var(--player-two);
+}
 
 /*footer*/
 footer {
@@ -73,5 +128,5 @@ a {
 }
 
 a:hover {
-    text-decoration: underline var(--main-dark) 2px;
+    text-decoration: underline var(--main-light) 2px;
 }
