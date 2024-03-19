@@ -36,7 +36,7 @@ const gameBoard = (function() {
         placeMark,
         clearGameBoard
     }
-})
+})();
 
 function createPlayer(mark) {
     let points = 0;
@@ -109,7 +109,9 @@ const gameController = (function() {
             else {
                 changePlayer();
             }
+            return true;
         }
+        return false;
     }
 
     function restartGame() {
@@ -119,30 +121,60 @@ const gameController = (function() {
         currentPlayer = playerO;
     }
 
+    function getCurrentPlayerMark() {
+        return currentPlayer.getMark();
+    }
+
+    function getCurrentPlayerPoints() {
+        return currentPlayer.getPoints();
+    }
+
     return {
         playRound,
-        restartGame
+        restartGame,
+        getCurrentPlayerMark,
     }
-});
+})();
 
 const displayController = (function() {
-    let gameBoardCells = document.querySelectorAll('.cell');
-    let btnRestart = document.querySelector('#btn-restart');
-    let playerOnePoints = document.querySelector('#player-1-points')
-    let playerTwoPoints = document.querySelector('#player-2-points');
+    let cells = document.querySelectorAll('.cell');
+    let playerOPoints = document.querySelector('#player-O-points');
+    let playerXPoints = document.querySelector('#player-X-points');
+    let restartButton = document.querySelector('#btn-restart');
 
-    btnRestart.addEventListener('click', () => {
-        gameController.restartGame();
-        playerOnePoints.textContent = '0';
-        playerTwoPoints.textContent = '0';
-        gameBoardCells.forEach(cell => cell.textContent = '');
-    });
+    function handleCellClick(e) {
+        if(gameController.playRound(index)) {
+            e.target.textContent = gameController.getCurrentPlayerMark();
+            if(e.target.textContent === 'X') {
+                playerXPoints.textContent = gameController.getCurrentPlayerPoints();
+            }
+            else {
+                playerOPoints.textContent = gameController.getCurrentPlayerPoints();
+            }
+        }
+    }
 
-    gameBoardCells.forEach(cell => cell.addEventListener('click', () => {
-        const index = gameBoardCells.indexOf(cell);
-        gameController.playRound(index);
-        cell.textContent = gameController.players[currentPlayerIndex].getMark();
-        playerOnePoints.textContent = gameController.players[0].getPoints();
-        playerTwoPoints.textContent = gameController.players[1].getPoints();
-    }));
-})
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', () => {
+            let round = gameController.playRound(i);
+            if(round) {
+                cells[i].textContent = gameController.getCurrentPlayerMark();
+            }
+            cells[i]
+        });
+    }
+
+    function addEvents() {
+        restartButton.addEventListener('click', () => {
+            gameController.restartGame();
+            playerOPoints.textContent = '0';
+            playerXPoints.textContent = '0';
+            cells.forEach((cell) => cell.textContent = '');
+        });
+
+    }
+
+    return { addEvents };
+})();
+
+displayController.addEvents();
