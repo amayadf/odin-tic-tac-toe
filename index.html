@@ -16,9 +16,10 @@
 
     <main>
         <div class="game-screen">
-            <p>It's Player <span id="current-player" class="O">O</span>'s turn!</p>
+            <p id="turn-message">It's Player <span id="current-player" class="O">O</span>'s turn!</p>
+            <p id="game-message" class="hidden"><span id="round-outcome" class="O">Player O wins!</span> Click anywhere to continue...</p>
             <div id="game-board">
-                <div class="cell">s</div>
+                <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div> 

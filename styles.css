@@ -61,6 +61,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 16px;
 }
 
@@ -84,6 +85,7 @@ main {
 
 .points-board {
     display: flex;
+    gap: 32px;
     justify-content: space-evenly;
 }
 
@@ -129,4 +131,8 @@ a {
 
 a:hover {
     text-decoration: underline var(--main-light) 2px;
+}
+
+.hidden {
+    display: none;
 }

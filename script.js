@@ -97,21 +97,23 @@ const gameController = (function() {
     }
 
     function playRound(index) {
+        let roundResult = 'unplaced';
         if(gameBoard.placeMark(index, currentPlayer.getMark())) {
             if(checkForTie()) {
-                currentPlayer = playerO;
                 gameBoard.clearGameBoard();
+                roundResult = 'tie';
             } 
             else if(checkForWin(index)) {
                 currentPlayer.addPoint();
                 gameBoard.clearGameBoard();
+                roundResult = 'win';
             }
             else {
                 changePlayer();
+                roundResult = 'unfinished'
             }
-            return true;
         }
-        return false;
+        return roundResult;
     }
 
     function restartGame() {
@@ -133,6 +135,7 @@ const gameController = (function() {
         playRound,
         restartGame,
         getCurrentPlayerMark,
+        getCurrentPlayerPoints,
     }
 })();
 
@@ -141,28 +144,10 @@ const displayController = (function() {
     let playerOPoints = document.querySelector('#player-O-points');
     let playerXPoints = document.querySelector('#player-X-points');
     let restartButton = document.querySelector('#btn-restart');
-
-    function handleCellClick(e) {
-        if(gameController.playRound(index)) {
-            e.target.textContent = gameController.getCurrentPlayerMark();
-            if(e.target.textContent === 'X') {
-                playerXPoints.textContent = gameController.getCurrentPlayerPoints();
-            }
-            else {
-                playerOPoints.textContent = gameController.getCurrentPlayerPoints();
-            }
-        }
-    }
-
-    for (let i = 0; i < cells.length; i++) {
-        cells[i].addEventListener('click', () => {
-            let round = gameController.playRound(i);
-            if(round) {
-                cells[i].textContent = gameController.getCurrentPlayerMark();
-            }
-            cells[i]
-        });
-    }
+    let turnMessage = document.querySelector('#turn-message')
+    let currentPlayer = document.querySelector('#current-player');
+    let gameMessage = document.querySelector('#game-message');
+    let roundOutcome = document.querySelector('#round-outcome');
 
     function addEvents() {
         restartButton.addEventListener('click', () => {
@@ -170,8 +155,64 @@ const displayController = (function() {
             playerOPoints.textContent = '0';
             playerXPoints.textContent = '0';
             cells.forEach((cell) => cell.textContent = '');
+            turnMessage.classList.remove('hidden');
+            gameMessage.classList.add('hidden');
+            currentPlayer.textContent = gameController.getCurrentPlayerMark();
+            currentPlayer.classList.remove('X');
+            currentPlayer.classList.add('O');
         });
 
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', (e) => {
+                let currentMark = gameController.getCurrentPlayerMark();
+                let roundResult = gameController.playRound(i);
+                if(roundResult !== 'unplaced') {
+                    cells[i].textContent = currentMark;
+                    if(roundResult !== 'unfinished') {
+                        if(roundResult === 'win') {
+                            if(currentMark === 'X') {
+                                playerXPoints.textContent = gameController.getCurrentPlayerPoints();
+                                roundOutcome.classList.remove('O');
+                                roundOutcome.classList.add('X');
+                                roundOutcome.textContent = 'Player X wins!';
+                            }
+                            else {
+                                playerOPoints.textContent = gameController.getCurrentPlayerPoints();
+                                roundOutcome.classList.add('O');
+                                roundOutcome.classList.remove('X');
+                                roundOutcome.textContent = 'Player O wins!';
+                            }
+                        }
+                        else if(roundResult === 'tie') {
+                            roundOutcome.classList.remove('O');
+                            roundOutcome.classList.remove('X');
+                            roundOutcome.textContent = "It's a tie!";
+                        }
+                        turnMessage.classList.add('hidden');
+                        gameMessage.classList.remove('hidden');
+    
+                        e.stopPropagation();
+    
+                        document.body.addEventListener('click', () => {
+                            updateGameBoard();
+                            turnMessage.classList.remove('hidden');
+                            gameMessage.classList.add('hidden');
+                        });
+                    }
+                    else {
+                        currentPlayer.textContent = gameController.getCurrentPlayerMark();
+                        currentPlayer.classList.toggle('X');
+                        currentPlayer.classList.toggle('O');
+                    } 
+                }
+            });
+        }
+    }
+
+    function updateGameBoard() {
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].textContent = gameBoard.getMarkAtIndex(i);
+        }
     }
 
     return { addEvents };
