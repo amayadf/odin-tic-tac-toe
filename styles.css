@@ -50,34 +50,14 @@ h1 {
 main {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    gap: 16px;
+    justify-content: center;
     align-items: center;
+    gap: 48px;
     height: 100%;
     width: 100%;
 }
 
-.game-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-}
-
-.hidden {
-    display: none;
-}
-
-.O {
-    color: var(--player-one);
-}
-
-.X {
-    color: var(--player-two);
-}
-
-#game-board {
+.main__game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: var(--secondary-dark);
@@ -85,24 +65,20 @@ main {
     height: 350px;
 }
 
-.cell {
+.game-board__cell {
     border: 1px solid var(--main-dark);
     text-align: center;
 }
 
-.cell:hover {
+.game-board__cell:hover {
     cursor: pointer;
     color: var(--main-light);
 }
 
-.points-board {
+.main__game-summary {
     display: flex;
-    gap: 32px;
-    justify-content: space-evenly;
-}
-
-p {
-    display: inline;
+    gap: 48px;
+    justify-content: space-between;
 }
 
 button {
@@ -121,8 +97,6 @@ button:hover {
     color: var(--main-dark);
 }
 
-
-
 /*footer*/
 footer {
     padding-bottom: 16px;
@@ -137,4 +111,17 @@ a {
 
 a:hover {
     text-decoration: underline var(--main-light) 2px;
+}
+
+/*common styles*/
+.hidden {
+    display: none;
+}
+
+.O {
+    color: var(--player-one);
+}
+
+.X {
+    color: var(--player-two);
 }
