@@ -65,6 +65,18 @@ main {
     gap: 16px;
 }
 
+.hidden {
+    display: none;
+}
+
+.O {
+    color: var(--player-one);
+}
+
+.X {
+    color: var(--player-two);
+}
+
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -109,13 +121,7 @@ button:hover {
     color: var(--main-dark);
 }
 
-.O {
-    color: var(--player-one);
-}
 
-.X {
-    color: var(--player-two);
-}
 
 /*footer*/
 footer {
@@ -131,8 +137,4 @@ a {
 
 a:hover {
     text-decoration: underline var(--main-light) 2px;
-}
-
-.hidden {
-    display: none;
 }

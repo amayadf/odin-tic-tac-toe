@@ -99,14 +99,14 @@ const gameController = (function() {
     function playRound(index) {
         let roundResult = 'unplaced';
         if(gameBoard.placeMark(index, currentPlayer.getMark())) {
-            if(checkForTie()) {
-                gameBoard.clearGameBoard();
-                roundResult = 'tie';
-            } 
-            else if(checkForWin(index)) {
+            if(checkForWin(index)) {
                 currentPlayer.addPoint();
                 gameBoard.clearGameBoard();
                 roundResult = 'win';
+            }
+            else if(checkForTie()) {
+                gameBoard.clearGameBoard();
+                roundResult = 'tie';
             }
             else {
                 changePlayer();
@@ -154,7 +154,11 @@ const displayController = (function() {
             gameController.restartGame();
             playerOPoints.textContent = '0';
             playerXPoints.textContent = '0';
-            cells.forEach((cell) => cell.textContent = '');
+            cells.forEach((cell) => {
+                cell.addEventListener('mouseover', handleMouseOver, false);
+                cell.addEventListener('mouseout', handleMouseOut);
+                cell.textContent = ''
+            });
             turnMessage.classList.remove('hidden');
             gameMessage.classList.add('hidden');
             currentPlayer.textContent = gameController.getCurrentPlayerMark();
@@ -163,7 +167,11 @@ const displayController = (function() {
         });
 
         for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('mouseover', handleMouseOver, false);
+            cells[i].addEventListener('mouseout', handleMouseOut);
             cells[i].addEventListener('click', (e) => {
+                cells[i].removeEventListener('mouseover', handleMouseOver);
+                cells[i].removeEventListener('mouseout', handleMouseOut);
                 let currentMark = gameController.getCurrentPlayerMark();
                 let roundResult = gameController.playRound(i);
                 if(roundResult !== 'unplaced') {
@@ -206,7 +214,16 @@ const displayController = (function() {
                     } 
                 }
             });
+   
         }
+    }
+
+    function handleMouseOver(e) {
+        e.target.textContent = gameController.getCurrentPlayerMark();
+    }
+
+    function handleMouseOut(e) {
+        e.target.textContent = '';
     }
 
     function updateGameBoard() {

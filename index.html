@@ -15,34 +15,39 @@
     </header>
 
     <main>
-        <div class="game-screen">
-            <p id="turn-message">It's Player <span id="current-player" class="O">O</span>'s turn!</p>
-            <p id="game-message" class="hidden"><span id="round-outcome" class="O">Player O wins!</span> Click anywhere to continue...</p>
-            <div id="game-board">
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div> 
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-    
-            <div class="points-board">
-                <div>
-                    <p class="O">Player 'O':</p>
-                    <p id="player-O-points">0</p>
-                </div>
-                <div>
-                    <p class="X">Player 'X':</p>
-                    <p id="player-X-points">0</p>
-                </div>
-            </div>
+        <div class="main__messages">
+            <p class="messages__turn-display">It's Player <span data-turn="O">O</span>'s turn!'</p>
+            <p class="messages__round-outcome hidden"><span data-outcome=""></span>Click anywhere to continue...</p>
         </div>
 
-        <button id="btn-restart">RESTART GAME</button>
+        <div class="main__game-board">
+            <div class="game-board__cell" data-index="0"></div>
+            <div class="game-board__cell" data-index="1"></div>
+            <div class="game-board__cell" data-index="2"></div>
+            <div class="game-board__cell" data-index="3"></div>
+            <div class="game-board__cell" data-index="4"></div> 
+            <div class="game-board__cell" data-index="5"></div>
+            <div class="game-board__cell" data-index="6"></div>
+            <div class="game-board__cell" data-index="7"></div>
+            <div class="game-board__cell" data-index="8"></div>
+        </div>
+
+        <div class="main__game-summary">
+            <div class="game-summary__points-info">
+                <p class="points-info__name O">Player O:</p>
+                <p class="points-info__amount">0</p>
+            </div>
+            <div class="game-summary__points-info">
+                <p class="points-info__name O">Ties:</p>
+                <p class="points-info__amount">0</p>
+            </div>
+            <div class="game-summary__points-info">
+                <p class="points-info__name X">Player X:</p>
+                <p class="points-info__amount">0</p>
+            </div>
+        </div>
+ 
+        <button class="main__restart-btn">RESTART GAME</button>
     </main>
 
     <footer>
