@@ -57,6 +57,10 @@ main {
     width: 100%;
 }
 
+p {
+    display: inline;
+}
+
 .main__game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

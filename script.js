@@ -1,3 +1,13 @@
+function createPlayer(mark) {
+    function getMark() {
+        return mark;
+    }
+
+    return {
+        getMark,
+    }
+}
+
 const gameBoard = (function() {
     let boardArray = ['','','','','','','','',''];
 
@@ -38,33 +48,6 @@ const gameBoard = (function() {
     }
 })();
 
-function createPlayer(mark) {
-    let points = 0;
-
-    function getMark() {
-        return mark;
-    }
-
-    function getPoints() {
-        return points;
-    }
-
-    function addPoint() {
-        points++;
-    }
-
-    function resetPoints() {
-        points = 0;
-    }
-
-    return {
-        getMark,
-        getPoints,
-        addPoint,
-        resetPoints
-    }
-}
-
 const gameController = (function() {
     let playerO = createPlayer('O');
     let playerX = createPlayer('X');
@@ -97,10 +80,9 @@ const gameController = (function() {
     }
 
     function playRound(index) {
-        let roundResult = 'unplaced';
+        let roundResult = 'unavailable';
         if(gameBoard.placeMark(index, currentPlayer.getMark())) {
             if(checkForWin(index)) {
-                currentPlayer.addPoint();
                 gameBoard.clearGameBoard();
                 roundResult = 'win';
             }
@@ -118,8 +100,6 @@ const gameController = (function() {
 
     function restartGame() {
         gameBoard.clearGameBoard();
-        playerO.resetPoints();
-        playerX.resetPoints();
         currentPlayer = playerO;
     }
 
@@ -127,95 +107,96 @@ const gameController = (function() {
         return currentPlayer.getMark();
     }
 
-    function getCurrentPlayerPoints() {
-        return currentPlayer.getPoints();
-    }
-
     return {
         playRound,
         restartGame,
         getCurrentPlayerMark,
-        getCurrentPlayerPoints,
     }
 })();
 
 const displayController = (function() {
-    let cells = document.querySelectorAll('.cell');
-    let playerOPoints = document.querySelector('#player-O-points');
-    let playerXPoints = document.querySelector('#player-X-points');
-    let restartButton = document.querySelector('#btn-restart');
-    let turnMessage = document.querySelector('#turn-message')
-    let currentPlayer = document.querySelector('#current-player');
-    let gameMessage = document.querySelector('#game-message');
-    let roundOutcome = document.querySelector('#round-outcome');
+    const cells = document.querySelectorAll('.game-board__cell');
+    const points = document.querySelectorAll('.points-info__amount');
+    const turnMessage = document.querySelector('.messages__turn-display');
+    const turnMessageSpan = document.querySelector('.messages__turn-display span')
+    const outcomeMessage = document.querySelector('.messages__round-outcome');
+    const outcomeMessageSpan = document.querySelector('.messages__round-outcome span');
+    const restartBtn = document.querySelector('.main__restart-btn');
+
+    let playerXPoints = 0, playerOPoints = 0, ties = 0;
 
     function addEvents() {
-        restartButton.addEventListener('click', () => {
+        restartBtn.addEventListener('click', () => {
             gameController.restartGame();
-            playerOPoints.textContent = '0';
-            playerXPoints.textContent = '0';
-            cells.forEach((cell) => {
-                cell.addEventListener('mouseover', handleMouseOver, false);
-                cell.addEventListener('mouseout', handleMouseOut);
-                cell.textContent = ''
-            });
+            resetPoints();
+            updatePointsInfo();
+            turnMessageSpan.textContent = gameController.getCurrentPlayerMark();
+            turnMessageSpan.classList.remove('X');
+            turnMessageSpan.classList.add('O');
+            outcomeMessage.classList.add('hidden');
             turnMessage.classList.remove('hidden');
-            gameMessage.classList.add('hidden');
-            currentPlayer.textContent = gameController.getCurrentPlayerMark();
-            currentPlayer.classList.remove('X');
-            currentPlayer.classList.add('O');
+            updateGameBoard();
         });
 
         for (let i = 0; i < cells.length; i++) {
-            cells[i].addEventListener('mouseover', handleMouseOver, false);
-            cells[i].addEventListener('mouseout', handleMouseOut);
             cells[i].addEventListener('click', (e) => {
-                cells[i].removeEventListener('mouseover', handleMouseOver);
-                cells[i].removeEventListener('mouseout', handleMouseOut);
                 let currentMark = gameController.getCurrentPlayerMark();
                 let roundResult = gameController.playRound(i);
-                if(roundResult !== 'unplaced') {
+                if(roundResult !== 'unavailable') {
                     cells[i].textContent = currentMark;
                     if(roundResult !== 'unfinished') {
                         if(roundResult === 'win') {
                             if(currentMark === 'X') {
-                                playerXPoints.textContent = gameController.getCurrentPlayerPoints();
-                                roundOutcome.classList.remove('O');
-                                roundOutcome.classList.add('X');
-                                roundOutcome.textContent = 'Player X wins!';
+                                playerXPoints++;
+                                outcomeMessageSpan.classList.remove('O');
+                                outcomeMessageSpan.classList.add('X');
+                                outcomeMessageSpan.textContent = 'Player X wins!';
                             }
                             else {
-                                playerOPoints.textContent = gameController.getCurrentPlayerPoints();
-                                roundOutcome.classList.add('O');
-                                roundOutcome.classList.remove('X');
-                                roundOutcome.textContent = 'Player O wins!';
+                                playerOPoints++;
+                                outcomeMessageSpan.classList.add('O');
+                                outcomeMessageSpan.classList.remove('X');
+                                outcomeMessageSpan.textContent = 'Player O wins!';
                             }
                         }
                         else if(roundResult === 'tie') {
-                            roundOutcome.classList.remove('O');
-                            roundOutcome.classList.remove('X');
-                            roundOutcome.textContent = "It's a tie!";
+                            ties++;
+                            outcomeMessageSpan.classList.remove('O');
+                            outcomeMessageSpan.classList.remove('X');
+                            outcomeMessageSpan.textContent = "It's a tie!";
                         }
+                        updatePointsInfo();
                         turnMessage.classList.add('hidden');
-                        gameMessage.classList.remove('hidden');
+                        outcomeMessage.classList.remove('hidden');
     
                         e.stopPropagation();
     
                         document.body.addEventListener('click', () => {
                             updateGameBoard();
                             turnMessage.classList.remove('hidden');
-                            gameMessage.classList.add('hidden');
+                            outcomeMessage.classList.add('hidden');
                         });
                     }
                     else {
-                        currentPlayer.textContent = gameController.getCurrentPlayerMark();
-                        currentPlayer.classList.toggle('X');
-                        currentPlayer.classList.toggle('O');
+                        turnMessageSpan.textContent = gameController.getCurrentPlayerMark();
+                        turnMessageSpan.classList.toggle('X');
+                        turnMessageSpan.classList.toggle('O');
                     } 
                 }
             });
-   
         }
+    }
+
+    function resetPoints() {
+        playerOPoints = 0;
+        ties = 0;
+        playerXPoints = 0;
+    }
+
+    function updatePointsInfo() {
+        points[0].textContent = playerOPoints;
+        points[1].textContent = ties;
+        points[2].textContent = playerXPoints;
     }
 
     function handleMouseOver(e) {
