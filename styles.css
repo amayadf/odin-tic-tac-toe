@@ -63,7 +63,7 @@ p {
 
 .main__game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0,1fr));
     background-color: var(--secondary-dark);
     width: 350px;
     height: 350px;
@@ -71,7 +71,10 @@ p {
 
 .game-board__cell {
     border: 1px solid var(--main-dark);
-    text-align: center;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .game-board__cell:hover {
